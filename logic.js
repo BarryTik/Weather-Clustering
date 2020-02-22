@@ -44,15 +44,4 @@ for (var i = 0; i < data.length; i++) {
 }
 
 
-
-//   console.log(Cities.Latitude, Cities.Longitude);
-//   // Add circles to map
-//   L.circle([Cities.Latitude, Cities.Longitude], {
-//     fillOpacity: 3.75,
-//     color: "red",
-//     fillColor: color,
-//     // Adjust radius
-//     //  radius: Cities. Cluster * 10
-//   }).bindPopup("<h1>" + Cities.City + "</h1> <hr> <h3>Points: " + Cities.Cluster + "</h3>").addTo(myMap);
-// }
 });
