@@ -19,16 +19,17 @@ for (var i = 0; i < data.length; i++) {
 
   // Conditionals for countries points
   var color = [ "#2F1510", "#431F21", "#542C37", "#613B50", "#674E6B", "#646384", "#597A99", "#4791A7", "#36A8AD", "#3ABDAA", "#58D1A0", "#83E391", "#B6F380", "#EDFE73"];
+  var colors = chroma.scale(['red','orange','yellow','green','blue','purple']).colors(14);
 
   for (var i = 0; i < data.length; i++) {
 
     L.circle([data[i].Latitude, data[i].Longitude], {
       fillOpacity: 3.75,
-      color: color[data[i].Cluster],
-      fillColor: color[data[i].Cluster],
+      color: colors[data[i].Cluster],
+      fillColor: colors[data[i].Cluster],
       // Adjust radius
         radius: 50000
-    }).bindPopup("<h1>" + data[i].City + "</h1> <hr> <h3>Cluster: " + data[i].Cluster + "</h3>").addTo(myMap);
+    }).bindPopup(`<h1>${data[i].City}</h1> <hr> <h5>Cluster: ${data[i].Cluster}</h5><br><p><b>Cloudiness</b>:${data[i]["Cloudiness(%)"]}% <b>Humidity:</b>${data[i]["Humidity(%)"]}% <br><b>Temperature:</b>${data[i]["Temperature(F)"]}F <b>Wind Speed:</b>${data[i]["Wind Speed(mph)"]}mph<p>`).addTo(myMap);
   }
 
 }
