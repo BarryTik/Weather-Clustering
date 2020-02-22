@@ -42,7 +42,7 @@ len(cities)
 
 base_url = 'http://api.openweathermap.org/data/2.5/weather?'
 units = 'imperial'
-weather_df = pd.DataFrame(columns=['City','Latitude','Temperature','Humidity','Cloudiness','Wind Speed'])
+weather_df = pd.DataFrame(columns=['City','Latitude','Temperature(F)','Humidity(%)','Cloudiness(%)','Wind Speed(mph)'])
 
 #defining variables
 inertia_arr = []
@@ -51,7 +51,7 @@ threshold = -0.05
 
 generate_data()
 
-X = weather_df[["Cloudiness","Humidity","Temperature", "Wind Speed"]]
+X = weather_df[["Cloudiness(%)","Humidity(%)","Temperature(F)", "Wind Speed(mph)"]]
 
 #calculate sum of squares of distance to closest center
 calc_inertia()
@@ -84,7 +84,7 @@ def generate_data():
             humidity = response['main']['humidity']
             clouds = response['clouds']['all']
             wind = response['wind']['speed']
-            weather_df = weather_df.append([{'City':city,'Temperature':temp,'Latitude':lat,'Longitude':lon,'Humidity':humidity,'Cloudiness':clouds,'Wind Speed':wind}])
+            weather_df = weather_df.append([{'City':city,'Temperature(F)':temp,'Latitude':lat,'Longitude':lon,'Humidity(%)':humidity,'Cloudiness(%)':clouds,'Wind Speed(mph)':wind}])
         except:
             print(f'City Number {count}: Error collecting data')
 
