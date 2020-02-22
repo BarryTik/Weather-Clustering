@@ -11,15 +11,10 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 }).addTo(myMap);
 
 //Read in the CSV using d3
-
 d3.csv("Global_Weather.csv").then(function(data) {  
 
-  // Loop through the cities array and create one marker for each city object
 for (var i = 0; i < data.length; i++) {
 
-  // Conditionals for countries points
-  var color = [ "#2F1510", "#431F21", "#542C37", "#613B50", "#674E6B", "#646384", "#597A99", "#4791A7", "#36A8AD", "#3ABDAA", "#58D1A0", "#83E391", "#B6F380", "#EDFE73"];
-  var colors = chroma.scale(['red','orange','yellow','green','blue','purple']).colors(14);
 
   for (var i = 0; i < data.length; i++) {
 
