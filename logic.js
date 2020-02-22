@@ -1,5 +1,5 @@
 var myMap = L.map("map", {
-  center: [15.5994, -28.6731],
+  center: [15.5994, -45],
   zoom: 3
 });
 
@@ -12,25 +12,15 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 
 //Read in the CSV using d3
 
-d3.csv("Global_Weather.txt").then(function(data) {  
+d3.csv("Global_Weather.csv").then(function(data) {  
 
-  console.log(data);
-
-var Cities = [];
-
-
-for (var i = 0; i < data.length; i++) {
-      console.log(data[i].Latitude, data[i].Longitude, data[i].Cluster);
-  }
-
-// Loop through the cities array and create one marker for each city object
+  // Loop through the cities array and create one marker for each city object
 for (var i = 0; i < data.length; i++) {
 
   // Conditionals for countries points
-  var color = [ "#442020", "#4F2934", "#51364B" , "#49465F" , "#37576B" , "#22676E" , "#227667", "#3F8158" , "#658A47", "#908F3B" ," #BC903F" , "#E68E57"];
+  var color = [ "#2F1510", "#431F21", "#542C37", "#613B50", "#674E6B", "#646384", "#597A99", "#4791A7", "#36A8AD", "#3ABDAA", "#58D1A0", "#83E391", "#B6F380", "#EDFE73"];
 
   for (var i = 0; i < data.length; i++) {
-    console.log(data[i].Latitude, data[i].Longitude, data[i].Cluster);
 
     L.circle([data[i].Latitude, data[i].Longitude], {
       fillOpacity: 3.75,

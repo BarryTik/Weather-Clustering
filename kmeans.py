@@ -68,11 +68,6 @@ for count, item in enumerate(cities):
 # generate_data()
 
 
-newfile = open("Global_Weather.txt","w+")
-newfile.write(weather_df.to_csv(index=False))
-newfile.close()
-
-
 X = weather_df[["Cloudiness(%)","Humidity(%)","Temperature(F)", "Wind Speed(mph)"]]
 print(X)
 
@@ -98,16 +93,6 @@ percent_change = percent_change[1:]
 print(percent_change)
 
 #select optimal k
-# k=0
-
-# for i,change in enumerate(percent_change):
-#     print(i)
-#     if change >= threshold:
-#         k = i+2
-#         print(k)
-#         break  
-# print(k)
-# print(type(k))
 
 def choose_k(percent_change):
     for i,change in enumerate(percent_change):
@@ -128,12 +113,14 @@ kmeans.fit(X)
 # save the predictions as `predicted_clusters`
 predicted_clusters = kmeans.predict(X)
 
+weather_df["Cluster"] = predicted_clusters
+
 centers = kmeans.cluster_centers_
 
 center_df = pd.DataFrame(centers, columns=['Cloudiness','Humidity','Temperature','Wind Speed'])
 
-newfile = open("Weather_Center.txt","w+")
-newfile.write(center_df.to_csv(index=False))
-newfile.close()
 
-    
+# Write data to files
+weather_df.to_csv("Global_Weather.csv", index=False)
+
+center_df.to_csv("Weather_Center.csv", index=False)
