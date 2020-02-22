@@ -36,7 +36,7 @@ for lat_lng in lat_lngs:
     # If the city is unique, then add it to a our cities list
     if city not in cities:
         cities.append(city)
-
+print(cities)
 # Print the city count to confirm sufficient count
 len(cities)
 
@@ -49,21 +49,77 @@ inertia_arr = []
 percent_change = []
 threshold = -0.05
 
-generate_data()
+
+for count, item in enumerate(cities):
+    city = item
+    print(f'City Number {count}: {city.capitalize()}')
+    try:
+        response = requests.get(f'{base_url}appid={api_key}&q={city}&units={units}').json()
+        lat = response['coord']['lat']
+        lon = response['coord']['lon']
+        temp = response['main']['temp']
+        humidity = response['main']['humidity']
+        clouds = response['clouds']['all']
+        wind = response['wind']['speed']
+        weather_df = weather_df.append([{'City':city,'Temperature(F)':temp,'Latitude':lat,'Longitude':lon,'Humidity(%)':humidity,'Cloudiness(%)':clouds,'Wind Speed(mph)':wind}])
+    except:
+        print(f'City Number {count}: Error collecting data')
+
+# generate_data()
+
+
+newfile = open("Global_Weather.txt","w+")
+newfile.write(weather_df.to_csv(index=False))
+newfile.close()
+
 
 X = weather_df[["Cloudiness(%)","Humidity(%)","Temperature(F)", "Wind Speed(mph)"]]
+print(X)
 
 #calculate sum of squares of distance to closest center
+def calc_inertia():
+    for i in range (20):
+        kmeans = KMeans(n_clusters=i+2)
+        kmeans.fit(X)
+        inertia_arr.append(kmeans.inertia_)
+
 calc_inertia()
 
 #calculate percent changes between different k
+
+def calc_per_chg(inertia_arr):
+    for i, inertia in enumerate(inertia_arr):
+        change = (inertia_arr[i]-inertia_arr[i-1])/inertia_arr[i-1]
+        percent_change.append(change)
+    print(percent_change)
+
 calc_per_chg(inertia_arr)
+percent_change = percent_change[1:]
+print(percent_change)
 
 #select optimal k
-k = choose_k(percent_change)
+# k=0
 
+# for i,change in enumerate(percent_change):
+#     print(i)
+#     if change >= threshold:
+#         k = i+2
+#         print(k)
+#         break  
+# print(k)
+# print(type(k))
+
+def choose_k(percent_change):
+    for i,change in enumerate(percent_change):
+        if change >= threshold:
+            return i+2
+            break 
+
+k = choose_k(percent_change)
+print(k)
 
 kmeans = KMeans(n_clusters = k )
+
 
 # Fit the model to the data
 kmeans.fit(X)
@@ -72,36 +128,12 @@ kmeans.fit(X)
 # save the predictions as `predicted_clusters`
 predicted_clusters = kmeans.predict(X)
 
-def generate_data():
-    for count, item in enumerate(cities):
-        city = item
-        #print(f'City Number {count}: {city.capitalize()}')
-        try:
-            response = requests.get(f'{base_url}appid={api_key}&q={city}&units={units}').json()
-            lat = response['coord']['lat']
-            lon = response['coord']['lon']
-            temp = response['main']['temp']
-            humidity = response['main']['humidity']
-            clouds = response['clouds']['all']
-            wind = response['wind']['speed']
-            weather_df = weather_df.append([{'City':city,'Temperature(F)':temp,'Latitude':lat,'Longitude':lon,'Humidity(%)':humidity,'Cloudiness(%)':clouds,'Wind Speed(mph)':wind}])
-        except:
-            print(f'City Number {count}: Error collecting data')
+centers = kmeans.cluster_centers_
 
+center_df = pd.DataFrame(centers, columns=['Cloudiness','Humidity','Temperature','Wind Speed'])
 
-def calc_inertia():
-    for i in range (20):
-        kmeans = KMeans(n_clusters=i+2)
-        kmeans.fit(X)
-        inertia_arr.append(kmeans.inertia_)
+newfile = open("Weather_Center.txt","w+")
+newfile.write(center_df.to_csv(index=False))
+newfile.close()
 
-def calc_per_chg(inertia_arr):
-    for i, inertia in enumerate(inertia_arr):
-        change = (inertia_arr[i]-inertia_arr[i-1])/inertia_arr[i-1]
-        percent_change.append(change)
-
-def choose_k(percent_change):
-    for i,change in enumerate(percent_change):
-        if change >= threshold:
-            return i
-        break      
+    
