@@ -1,7 +1,7 @@
 # Weather-Clustering
 This visualization shows the results of a k-means clustering machine learning algorithm on temperature, humidity, cloudiness and wind speed for randomly selected cities. 
 
-##### [See the interactive visualization here!](https://barrytik.github.io/Weather-Clustering/)
+## [See the interactive visualization here!](https://barrytik.github.io/Weather-Clustering/)
 
 kmeans.py was used to generate data and cluster the data. logic.js and details.js were used to render the visualization.
 
