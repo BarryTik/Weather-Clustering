@@ -116,12 +116,14 @@ kmeans.fit(X)
 # save the predictions as `predicted_clusters`
 predicted_clusters = kmeans.predict(X)
 
+weather_df["Cluster"] = predicted_clusters
+
 centers = kmeans.cluster_centers_
 
 center_df = pd.DataFrame(centers, columns=['Cloudiness','Humidity','Temperature','Wind Speed'])
 
-newfile = open("Weather_Center.txt","w+")
-newfile.write(center_df.to_csv(index=False))
-newfile.close()
 
-    
+# Write data to files
+weather_df.to_csv("Global_Weather.csv", index=False)
+
+center_df.to_csv("Weather_Center.csv", index=False)
