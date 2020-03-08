@@ -49,7 +49,7 @@ inertia_arr = []
 percent_change = []
 threshold = -0.05
 
-
+#generating data
 for count, item in enumerate(cities):
     city = item
     print(f'City Number {count}: {city.capitalize()}')
@@ -65,18 +65,17 @@ for count, item in enumerate(cities):
     except:
         print(f'City Number {count}: Error collecting data')
 
-# generate_data()
-
-
+#export data to csv.file
 newfile = open("Global_Weather.txt","w+")
 newfile.write(weather_df.to_csv(index=False))
 newfile.close()
 
 
+#defining inputs for k-means algorithm
 X = weather_df[["Cloudiness(%)","Humidity(%)","Temperature(F)", "Wind Speed(mph)"]]
 print(X)
 
-#calculate sum of squares of distance to closest center
+#calculate inertia (sum of squares of distance to closest center)
 def calc_inertia():
     for i in range (20):
         kmeans = KMeans(n_clusters=i+2)
@@ -97,17 +96,6 @@ calc_per_chg(inertia_arr)
 percent_change = percent_change[1:]
 print(percent_change)
 
-#select optimal k
-# k=0
-
-# for i,change in enumerate(percent_change):
-#     print(i)
-#     if change >= threshold:
-#         k = i+2
-#         print(k)
-#         break  
-# print(k)
-# print(type(k))
 
 def choose_k(percent_change):
     for i,change in enumerate(percent_change):
