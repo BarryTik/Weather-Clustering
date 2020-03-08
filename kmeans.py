@@ -96,7 +96,7 @@ calc_per_chg(inertia_arr)
 percent_change = percent_change[1:]
 print(percent_change)
 
-
+#select optimal k
 def choose_k(percent_change):
     for i,change in enumerate(percent_change):
         if change >= threshold:
@@ -106,6 +106,7 @@ def choose_k(percent_change):
 k = choose_k(percent_change)
 print(k)
 
+#define kmeans model with optimal k
 kmeans = KMeans(n_clusters = k )
 
 
@@ -116,10 +117,12 @@ kmeans.fit(X)
 # save the predictions as `predicted_clusters`
 predicted_clusters = kmeans.predict(X)
 
+#add as new column in weather_df
 weather_df["Cluster"] = predicted_clusters
 
 centers = kmeans.cluster_centers_
 
+#store centers in new dataframe
 center_df = pd.DataFrame(centers, columns=['Cloudiness','Humidity','Temperature','Wind Speed'])
 
 
