@@ -1,3 +1,4 @@
+//assigning colors to clusters from Weather_center.csv
 var tbody = d3.select("#details")
 var colors;
 d3.csv("Weather_Center.csv").then( data => {
