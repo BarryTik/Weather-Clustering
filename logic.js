@@ -1,8 +1,9 @@
+//define center of map
 var myMap = L.map("map", {
   center: [15.5994, -45],
   zoom: 3
 });
-
+//add map layer
 L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
   attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
   maxZoom: 18,
@@ -17,9 +18,10 @@ for (var i = 0; i < data.length; i++) {
 
 
   for (var i = 0; i < data.length; i++) {
-
+     //create circle based on cluster centers 
     L.circle([data[i].Latitude, data[i].Longitude], {
       fillOpacity: 3.75,
+      //assign colors
       color: colors[data[i].Cluster],
       fillColor: colors[data[i].Cluster],
       // Adjust radius
