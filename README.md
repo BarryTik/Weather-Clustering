@@ -3,10 +3,10 @@ This visualization shows the results of a k-means clustering machine learning al
 
 ## [See the interactive visualization here!](https://barrytik.github.io/Weather-Clustering/)
 
-kmeans.py was used to generate data and cluster the data. logic.js and details.js were used to render the visualization.
+The file kmeans.py was used to generate data and cluster the data. Files logic.js and details.js were used to render the visualization.
 
  ### Data Generation
-Cities were selected by randomizing lattitude and longitude values and using the [citipy](https://pypi.org/project/citipy/ "citipy info page") python library to find the nearest city to each generated coordinate pair. City names were used to call the [Open Weather Map API](https://openweathermap.org/api "OpenWeatherMap API Website") for the current weather for each city. Repeated cities and cities that the API failed to recognize were discarded.
+Cities were selected by randomizing lattitude and longitude coordinates and using the [citipy](https://pypi.org/project/citipy/ "citipy info page") python library to find the nearest city to each generated coordinate pair. City names were used to call the [Open Weather Map API](https://openweathermap.org/api "OpenWeatherMap API Website") for the current weather report for each city. Duplicate cities and cities that the API failed to recognize were discarded.
 
 ### Clustering
 The four weather factors recieved from each API call and the city's coordinates were stored in a Python pandas dataframe called weather_df. Using a [scikit-learn k-means](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html "Module Documentation") clustering algorithm, the four weather inputs were grouped by k clusters. The number of clusters was determined programmatically by defining a threshold where increasing k yielded a decrease in the [inertia](# "Inertia is the sum of squared distances of samples to their closest cluster center.") of less than 5%. The data was clustered into k clusters and labeled in a new column of the dataframe by cluster number. The program then outputs two csv files, one of the dataframe and one of the centers of the k clusters. 
