@@ -7,7 +7,9 @@ import requests
 import time
 
 # Import API key
-api_key = "717f5db46032a766d9b816399c6850cf"
+#uncomment api_key if needed
+# api_key = "717f5db46032a766d9b816399c6850cf"
+api_key = "f78bc7bd6735591c70e2939381b857cc"
 print(api_key)
 
 # Incorporated citipy to determine city based on latitude and longitude
