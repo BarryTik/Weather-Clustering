@@ -125,7 +125,10 @@ centers = kmeans.cluster_centers_
 #store centers in new dataframe
 center_df = pd.DataFrame(centers, columns=['Cloudiness','Humidity','Temperature','Wind Speed'])
 
+#sort temperatures of clusters in descending order
 center_df = center_df.sort_values('Temperature',ascending=False)
+#print centers
+print(center_df)
 
 # Write data to files
 weather_df.to_csv("Global_Weather.csv", index=False)
