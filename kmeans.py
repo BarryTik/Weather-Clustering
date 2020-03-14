@@ -10,13 +10,10 @@ import time
 #uncomment api_key if needed
 # api_key = "717f5db46032a766d9b816399c6850cf"
 api_key = "f78bc7bd6735591c70e2939381b857cc"
-print(api_key)
+
 
 # Incorporated citipy to determine city based on latitude and longitude
 from citipy import citipy
-
-# Output File (CSV)
-output_data_file = "output_data/cities.csv"
 
 # Range of latitudes and longitudes
 lat_range = (-90, 90)
@@ -38,7 +35,6 @@ for lat_lng in lat_lngs:
     # If the city is unique, then add it to a our cities list
     if city not in cities:
         cities.append(city)
-print(cities)
 # Print the city count to confirm sufficient count
 len(cities)
 
@@ -51,31 +47,25 @@ inertia_arr = []
 percent_change = []
 threshold = -0.05
 
-#generating data
-for count, item in enumerate(cities):
-    city = item
-    print(f'City Number {count}: {city.capitalize()}')
-    try:
-        response = requests.get(f'{base_url}appid={api_key}&q={city}&units={units}').json()
-        lat = response['coord']['lat']
-        lon = response['coord']['lon']
-        temp = response['main']['temp']
-        humidity = response['main']['humidity']
-        clouds = response['clouds']['all']
-        wind = response['wind']['speed']
-        weather_df = weather_df.append([{'City':city,'Temperature(F)':temp,'Latitude':lat,'Longitude':lon,'Humidity(%)':humidity,'Cloudiness(%)':clouds,'Wind Speed(mph)':wind}])
-    except:
-        print(f'City Number {count}: Error collecting data')
-
-#export data to csv.file
-newfile = open("Global_Weather.txt","w+")
-newfile.write(weather_df.to_csv(index=False))
-newfile.close()
-
+# #generating data
+# for count, item in enumerate(cities):
+#     city = item
+#     print(f'City Number {count}: {city.title()}')
+#     try:
+#         response = requests.get(f'{base_url}appid={api_key}&q={city}&units={units}').json()
+#         lat = response['coord']['lat']
+#         lon = response['coord']['lon']
+#         temp = response['main']['temp']
+#         humidity = response['main']['humidity']
+#         clouds = response['clouds']['all']
+#         wind = response['wind']['speed']
+#         weather_df = weather_df.append([{'City':city.title(),'Temperature(F)':temp,'Latitude':lat,'Longitude':lon,'Humidity(%)':humidity,'Cloudiness(%)':clouds,'Wind Speed(mph)':wind}])
+#     except:
+#         print(f'City Number {count}: Error collecting data')
+weather_df = pd.read_csv("test_input_Global_Weather.csv")
 
 #defining inputs for k-means algorithm
 X = weather_df[["Cloudiness(%)","Humidity(%)","Temperature(F)", "Wind Speed(mph)"]]
-print(X)
 
 #calculate inertia (sum of squares of distance to closest center)
 def calc_inertia():
@@ -103,7 +93,6 @@ def choose_k(percent_change):
     for i,change in enumerate(percent_change):
         if change >= threshold:
             return i+2
-            break 
 
 k = choose_k(percent_change)
 print(k)
@@ -120,24 +109,28 @@ kmeans.fit(X)
 predicted_clusters = kmeans.predict(X)
 
 #add as new column in weather_df
-weather_df["Cluster"] = predicted_clusters
+weather_df["Initial Cluster"] = predicted_clusters
 
 centers = kmeans.cluster_centers_
 
 #store centers in new dataframe
 center_df = pd.DataFrame(centers, columns=['Cloudiness','Humidity','Temperature','Wind Speed'])
-center_df["Clusters"] = [i for i in range(k)]
+center_df["Initial Cluster"] = [i for i in range(k)]
+
 
 #sort temperatures of clusters in descending order
 center_df = center_df.sort_values('Temperature',ascending=False)
+center_df["Cluster"] = [i for i in range(k)]
 
-#re-arranging columns
-center_df = center_df[['Clusters','Temperature','Humidity','Cloudiness','Wind Speed']]
-
-#print centers
+print("center_df")
 print(center_df)
+
+#reassign cluster number for new sort
+weather_df = weather_df.reset_index(drop = True)
+weather_df["Cluster"] = [center_df.loc[weather_df.loc[index, "Initial Cluster"] ==  center_df["Initial Cluster"]]["Cluster"][weather_df.loc[index, "Initial Cluster"]]  for index in weather_df.index]
+print("weather_df")
+print(weather_df)
 
 # Write data to files
 weather_df.to_csv("Global_Weather.csv", index=False)
-
 center_df.to_csv("Weather_Center.csv", index=False)
