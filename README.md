@@ -18,4 +18,4 @@ The map was created using [Leaflet](https://leafletjs.com/ "Leaflet.js Website")
 ![Visualization](Screenshot.png)
 
 ### Limitations 
-Due to the limit of 60 API calls per minute with a free key we chose not to enable this visualization to update to live weather conditions. The data on this dashboard was gathered on February 22 2020.
+Due to the limit of 60 API calls per minute with a free key we chose not to enable this visualization to update to live weather conditions. The data on this dashboard was gathered on March 14 2020.
