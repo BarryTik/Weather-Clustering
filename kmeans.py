@@ -130,6 +130,10 @@ center_df["Clusters"] = [i for i in range(k)]
 
 #sort temperatures of clusters in descending order
 center_df = center_df.sort_values('Temperature',ascending=False)
+
+#re-arranging columns
+center_df = center_df[['Clusters','Temperature','Humidity','Cloudiness','Wind Speed']]
+
 #print centers
 print(center_df)
 
