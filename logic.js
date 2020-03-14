@@ -26,7 +26,7 @@ for (var i = 0; i < data.length; i++) {
       fillColor: colors[data[i].Cluster],
       // Adjust radius
         radius: 50000
-    }).bindPopup(`<h1>${data[i].City}</h1> <hr> <h5>Cluster: ${data[i].Cluster}</h5><br><p><b>Cloudiness</b>:${data[i]["Cloudiness(%)"]}% <b>Humidity:</b>${data[i]["Humidity(%)"]}% <br><b>Temperature:</b>${data[i]["Temperature(F)"]}F <b>Wind Speed:</b>${data[i]["Wind Speed(mph)"]}mph<p>`).addTo(myMap);
+    }).bindPopup(`<h1>${data[i].City}</h1> <hr> <h5>Cluster: ${data[i].Cluster}</h5><br><p><b>Temperature</b>:${data[i]["Temperature(F)"]}F <b>Humidity:</b>${data[i]["Humidity(%)"]}% <br><b>Cloudiness:</b>${data[i]["Cloudiness(%)"]}% <b>Wind Speed:</b>${data[i]["Wind Speed(mph)"]}mph<p>`).addTo(myMap);
   }
 
 }

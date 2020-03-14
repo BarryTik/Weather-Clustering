@@ -47,22 +47,26 @@ inertia_arr = []
 percent_change = []
 threshold = -0.05
 
-# #generating data
-# for count, item in enumerate(cities):
-#     city = item
-#     print(f'City Number {count}: {city.title()}')
-#     try:
-#         response = requests.get(f'{base_url}appid={api_key}&q={city}&units={units}').json()
-#         lat = response['coord']['lat']
-#         lon = response['coord']['lon']
-#         temp = response['main']['temp']
-#         humidity = response['main']['humidity']
-#         clouds = response['clouds']['all']
-#         wind = response['wind']['speed']
-#         weather_df = weather_df.append([{'City':city.title(),'Temperature(F)':temp,'Latitude':lat,'Longitude':lon,'Humidity(%)':humidity,'Cloudiness(%)':clouds,'Wind Speed(mph)':wind}])
-#     except:
-#         print(f'City Number {count}: Error collecting data')
-weather_df = pd.read_csv("test_input_Global_Weather.csv")
+#generating data
+for count, item in enumerate(cities):
+# for count in range(10):
+    city = item
+    # city = cities[count]
+    print(f'City Number {count}: {city.title()}')
+    try:
+        response = requests.get(f'{base_url}appid={api_key}&q={city}&units={units}').json()
+        lat = response['coord']['lat']
+        lon = response['coord']['lon']
+        temp = response['main']['temp']
+        humidity = response['main']['humidity']
+        clouds = response['clouds']['all']
+        wind = response['wind']['speed']
+        weather_df = weather_df.append([{'City':city.title(),'Temperature(F)':temp,'Latitude':lat,'Longitude':lon,'Humidity(%)':humidity,'Cloudiness(%)':clouds,'Wind Speed(mph)':wind}])
+    except:
+        print(f'City Number {count}: Error collecting data')
+
+#Dataset for debugging
+# weather_df = pd.read_csv("test_input_Global_Weather.csv")
 
 #defining inputs for k-means algorithm
 X = weather_df[["Cloudiness(%)","Humidity(%)","Temperature(F)", "Wind Speed(mph)"]]
