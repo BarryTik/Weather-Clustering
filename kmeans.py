@@ -126,6 +126,7 @@ centers = kmeans.cluster_centers_
 
 #store centers in new dataframe
 center_df = pd.DataFrame(centers, columns=['Cloudiness','Humidity','Temperature','Wind Speed'])
+center_df["Clusters"] = [i for i in range(k)]
 
 #sort temperatures of clusters in descending order
 center_df = center_df.sort_values('Temperature',ascending=False)
